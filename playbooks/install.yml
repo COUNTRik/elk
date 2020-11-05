@@ -1,0 +1,74 @@
+---
+- name: Log Server
+  hosts: logs
+  become: true
+  
+  tasks:
+    - name: Install EPEL Repo package from standart repo
+      yum:
+        name: epel-release
+        state: present
+      tags:
+        - epel-package
+        - package
+        - vim
+        - mc
+
+    - name: Install user package
+      yum:
+        name:
+          - mc
+          - vim
+          - wget
+        state: latest
+      tags:
+        - user-package
+        - package
+
+    - name: Install Docker package from EPEL Repo
+      yum:
+        name:
+          - docker
+          - docker-compose
+        state: latest
+      tags:
+        - docker-package
+        - package
+        
+
+- name: NGINX | Install EPEL Repo
+  hosts: web
+  become: true
+  vars:
+    nginx_listen_port: 8080
+
+  tasks:
+    - name: NGINX | Install EPEL Repo package from standart repo
+      yum:
+        name: epel-release
+        state: present
+      tags:
+        - epel-package
+        - package
+
+    - name: NGINX | Install NGINX package from EPEL Repo
+      yum:
+        name: nginx
+        state: latest
+      notify:
+        - restart nginx
+      tags:
+        - nginx-package
+        - package
+
+  handlers: 
+    - name: restart nginx
+      systemd:
+        name: nginx
+        state: restarted
+        enabled: yes
+
+    - name: reload nginx
+      systemd:
+        name: nginx
+        state: reloaded
