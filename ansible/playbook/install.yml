@@ -1,0 +1,35 @@
+---
+- name: INSTALL PACKAGE
+  hosts: all
+  become: true
+  
+  tasks:
+    - name: Install EPEL
+      yum:
+        name: epel-release
+        state: latest
+
+    - name: Install package
+      yum:
+        name:
+          - mc
+          - vim
+        state: latest
+
+- name: LOG
+  hosts: server
+  become: true
+
+  tasks:
+    - name: Create static.key
+      shell: openvpn --genkey --secret /etc/openvpn/static.key
+
+- name: WEB
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Install package
+      yum:
+        name: nginx
+        state: latest
