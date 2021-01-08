@@ -20,7 +20,7 @@ rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 cp /vagrant/config/elasticsearch.repo /etc/yum.repos.d/elasticsearch.repo
 
 # Установим filebeat
-yum install -y filebeat
+yum install -y filebeat auditbeat
 
 # Включим неохродимые модули в filebet
 filebeat modules enable system
