@@ -1,10 +1,10 @@
-# VPN
+# ELK
 
-Установлка и настройка ELK для сбора логов NGINX.
+Установка и настройка ELK для сбора логов NGINX.
 
 Информация по настройке частично также взята [отсюда](https://serveradmin.ru/ustanovka-i-nastroyka-elasticsearch-logstash-kibana-elk-stack/#Casto_zadavaemye_voprosy_po_teme_stati_FAQ)
 
-Запустим стенд с двумя машинами *log* и *web*. Все нужные пакеты установятся через vagrant.
+Запустим стенд с двумя машинами *log* и *web*. Все нужные пакеты установятся через vagrant с помощью репозитория elastic. 
 
 ## Настройка Elasticsearch
 
