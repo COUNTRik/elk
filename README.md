@@ -2,6 +2,8 @@
 
 Установлка и настройка ELK для сбора логов NGINX.
 
+Информация по настройке частично также взята [отсюда](https://serveradmin.ru/ustanovka-i-nastroyka-elasticsearch-logstash-kibana-elk-stack/#Casto_zadavaemye_voprosy_po_teme_stati_FAQ)
+
 Запустим стенд с двумя машинами *log* и *web*. Все нужные пакеты установятся через vagrant.
 
 ## Настройка Elasticsearch
@@ -20,7 +22,7 @@
 
 Немного изменим конфигурационный файл */etc/filebeat/filebeat.yml* на машине *web*.
 
-Так как мы будем использовать Logstash для дополнительной обработки данных, Filebeat не потребуется отправлять данные в Elasticsearch напрямую, поэтому мы отключим этот вывод. Для этого мы найдем раздел output.elasticsearch и закоментируем этот параметр в 
+Так как мы будем использовать Logstash для дополнительной обработки данных, Filebeat не потребуется отправлять данные в Elasticsearch напрямую, поэтому мы отключим этот вывод. Для этого мы найдем раздел output.elasticsearch и закоментируем этот параметр 
 
 	#output.elasticsearch:
 	  # Array of hosts to connect to.
@@ -43,8 +45,28 @@
 	# systemctl enable filebeat
 	# systemctl start filebeat
 
+## Настройка Auditbeat
 
-## Запуск ELK
+Откроем файл конфигурации */etc/auditbeat/auditbeat.yml* и также как и в filebeat раскомментируем раздел
+
+	output.logstash:
+	  hosts: ["192.168.50.10:5044"]
+
+Также укажем ip для kibana
+
+	setup.kibana:
+	  host: "192.168.50.10.5601"
+
+Настроим и применим настройки
+
+	 auditbeat setup -e 
+
+Запускаем *auditbeat*
+
+	# systemctl enable auditbeat
+	# systemctl start auditbeat
+
+# Запуск ELK
 
 Запускаем стек ELK на *log*
 
